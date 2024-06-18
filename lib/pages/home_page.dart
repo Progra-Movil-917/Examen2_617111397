@@ -18,8 +18,8 @@ class _HomePageState extends State<HomePage> {
   String? selectedCenter;
   String? selectedDoctor;
 
-  final List<String> ingredientes = ["Huevo", "Harina", "Manteca","Leche","Carne","Pollo"];
-  final List<String> utencilios = ["Cuchillo", "Cuchara",""];
+  final List<String> ingredientes = ["Huevo", "Harina", "Manteca", "Leche", "Carne", "Pollo"];
+  final List<String> utencilios = ["Cuchillo", "Cuchara", "Cucharon"];
 
   void openNotes({String? docID, Map<String, dynamic>? existingData}) {
     if (existingData != null) {
@@ -39,99 +39,107 @@ class _HomePageState extends State<HomePage> {
     showDialog(
       context: context,
       builder: (context) => AlertDialog(
-        title: Text('Agregue una receta', style: TextStyle(color: Colors.blueAccent)),
-        content: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            TextField(
-              controller: nameController,
-              decoration: InputDecoration(
-                labelText: 'Nombre',
-                border: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(10),
+        title: Text('Agregar una receta', style: TextStyle(color: Colors.blueAccent)),
+        content: SingleChildScrollView(
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              TextFormField(
+                controller: nameController,
+                decoration: InputDecoration(
+                  labelText: 'Nombre',
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(10),
+                    borderSide: BorderSide(color: Colors.blueAccent),
+                  ),
                 ),
               ),
-            ),
-            SizedBox(height: 10),
-            TextField(
-              controller: noteController,
-              decoration: InputDecoration(
-                labelText: 'Descripcion',
-                border: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(10),
+              SizedBox(height: 10),
+              TextFormField(
+                controller: noteController,
+                decoration: InputDecoration(
+                  labelText: 'Descripción',
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(10),
+                    borderSide: BorderSide(color: Colors.blueAccent),
+                  ),
                 ),
               ),
-            ),
-            SizedBox(height: 10),
-            DropdownButtonFormField<String>(
-              value: selectedCenter,
-              decoration: InputDecoration(
-                labelText: 'Ingredientes',
-                border: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(10),
-                ),
-              ),
-              items: ingredientes.map((center) {
-                return DropdownMenuItem<String>(
-                  value: center,
-                  child: Text(center),
-                );
-              }).toList(),
-              onChanged: (value) {
-                setState(() {
-                  selectedCenter = value;
-                });
-              },
-            ),
-            SizedBox(height: 10),
-            DropdownButtonFormField<String>(
-              value: selectedDoctor,
-              decoration: InputDecoration(
-                labelText: 'Doctor',
-                border: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(10),
-                ),
-              ),
-              items: utencilios.map((doctor) {
-                return DropdownMenuItem<String>(
-                  value: doctor,
-                  child: Text(doctor),
-                );
-              }).toList(),
-              onChanged: (value) {
-                setState(() {
-                  selectedDoctor = value;
-                });
-              },
-            ),
-            SizedBox(height: 10),
-            TextField(
-              controller: dateController,
-              decoration: InputDecoration(
-                labelText: 'Fecha de preparacion',
-                border: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(10),
-                ),
-              ),
-              onTap: () async {
-                DateTime? pickedDate = await showDatePicker(
-                  context: context,
-                  initialDate: DateTime.now(),
-                  firstDate: DateTime(2000),
-                  lastDate: DateTime(2101),
-                );
-                if (pickedDate != null) {
+              SizedBox(height: 10),
+              DropdownButtonFormField<String>(
+                value: selectedCenter,
+                onChanged: (value) {
                   setState(() {
-                    dateController.text = "${pickedDate.day}/${pickedDate.month}/${pickedDate.year}";
+                    selectedCenter = value;
                   });
-                }
-              },
-            ),
-          ],
+                },
+                items: ingredientes.map((center) {
+                  return DropdownMenuItem<String>(
+                    value: center,
+                    child: Text(center),
+                  );
+                }).toList(),
+                decoration: InputDecoration(
+                  labelText: 'Ingredientes',
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(10),
+                    borderSide: BorderSide(color: Colors.blueAccent),
+                  ),
+                ),
+              ),
+              SizedBox(height: 10),
+              DropdownButtonFormField<String>(
+                value: selectedDoctor,
+                onChanged: (value) {
+                  setState(() {
+                    selectedDoctor = value;
+                  });
+                },
+                items: utencilios.map((doctor) {
+                  return DropdownMenuItem<String>(
+                    value: doctor,
+                    child: Text(doctor),
+                  );
+                }).toList(),
+                decoration: InputDecoration(
+                  labelText: 'Utensilios',
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(10),
+                    borderSide: BorderSide(color: Colors.blueAccent),
+                  ),
+                ),
+              ),
+              SizedBox(height: 10),
+              TextFormField(
+                controller: dateController,
+                readOnly: true,
+                onTap: () async {
+                  DateTime? pickedDate = await showDatePicker(
+                    context: context,
+                    initialDate: DateTime.now(),
+                    firstDate: DateTime(2000),
+                    lastDate: DateTime(2101),
+                  );
+                  if (pickedDate != null) {
+                    setState(() {
+                      dateController.text = "${pickedDate.day}/${pickedDate.month}/${pickedDate.year}";
+                    });
+                  }
+                },
+                decoration: InputDecoration(
+                  labelText: 'Fecha de preparación',
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(10),
+                    borderSide: BorderSide(color: Colors.blueAccent),
+                  ),
+                ),
+              ),
+            ],
+          ),
         ),
         actions: [
           ElevatedButton(
-             onPressed: () {
+            onPressed: () {
               final newNote = {
                 'name': nameController.text,
                 'note': noteController.text,
@@ -170,13 +178,13 @@ class _HomePageState extends State<HomePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Menu de recetas', style: TextStyle(color: Colors.white)),
-        backgroundColor: Colors.blueAccent,
+        title: Text('Menú de Recetas'),
+        backgroundColor: Color.fromARGB(255, 6, 138, 131),
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: openNotes,
         backgroundColor: Colors.blueAccent,
-        child: const Icon(Icons.add),
+        child: Icon(Icons.add),
       ),
       body: StreamBuilder<QuerySnapshot>(
         stream: firestoreService.getNotesStream(),
@@ -193,20 +201,28 @@ class _HomePageState extends State<HomePage> {
                 Map<String, dynamic> data = document.data() as Map<String, dynamic>;
 
                 return Card(
-                  margin: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+                  margin: EdgeInsets.symmetric(horizontal: 10, vertical: 5),
                   elevation: 3,
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(10),
                   ),
                   child: ListTile(
-                    title: Text(data['name']),
+                    title: Text(
+                      data['name'],
+                      style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                    ),
                     subtitle: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
+                        SizedBox(height: 8),
                         Text('Ingredientes: ${data['center']}'),
-                        Text('Doctor: ${data['doctor']}'),
-                        Text('Fecha de preparacion: ${data['date']}'),
-                        Text('Descripcion: ${data['note']}'),
+                        SizedBox(height: 4),
+                        Text('Utensilios: ${data['doctor']}'),
+                        SizedBox(height: 4),
+                        Text('Fecha de preparación: ${data['date']}'),
+                        SizedBox(height: 4),
+                        Text('Descripción: ${data['note']}'),
+                        SizedBox(height: 8),
                       ],
                     ),
                     trailing: Row(
@@ -214,11 +230,11 @@ class _HomePageState extends State<HomePage> {
                       children: [
                         IconButton(
                           onPressed: () => openNotes(docID: docID, existingData: data),
-                          icon: const Icon(Icons.edit, color: Colors.blueAccent),
+                          icon: Icon(Icons.edit, color: Colors.blueAccent),
                         ),
                         IconButton(
                           onPressed: () => firestoreService.deleteNotes(docID),
-                          icon: const Icon(Icons.delete, color: Colors.redAccent),
+                          icon: Icon(Icons.delete, color: Colors.redAccent),
                         ),
                       ],
                     ),
@@ -227,8 +243,8 @@ class _HomePageState extends State<HomePage> {
               },
             );
           } else {
-            return const Center(
-              child: Text("Sin citas", style: TextStyle(fontSize: 18)),
+            return Center(
+              child: Text("Sin recetas", style: TextStyle(fontSize: 18)),
             );
           }
         },
