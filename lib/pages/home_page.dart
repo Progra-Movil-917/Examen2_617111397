@@ -18,8 +18,8 @@ class _HomePageState extends State<HomePage> {
   String? selectedCenter;
   String? selectedDoctor;
 
-  final List<String> centers = ["Catarino", "IHSS", "Seguro social"];
-  final List<String> doctors = ["Alberto Hernandez", "Miguel Molina", "Maria Perez"];
+  final List<String> ingredientes = ["Huevo", "Harina", "Manteca","Leche","Carne","Pollo"];
+  final List<String> utencilios = ["Cuchillo", "Cuchara",""];
 
   void openNotes({String? docID, Map<String, dynamic>? existingData}) {
     if (existingData != null) {
@@ -39,7 +39,7 @@ class _HomePageState extends State<HomePage> {
     showDialog(
       context: context,
       builder: (context) => AlertDialog(
-        title: Text('Agende una cita', style: TextStyle(color: Colors.blueAccent)),
+        title: Text('Agregue una receta', style: TextStyle(color: Colors.blueAccent)),
         content: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
@@ -56,7 +56,7 @@ class _HomePageState extends State<HomePage> {
             TextField(
               controller: noteController,
               decoration: InputDecoration(
-                labelText: 'Nota',
+                labelText: 'Descripcion',
                 border: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(10),
                 ),
@@ -66,12 +66,12 @@ class _HomePageState extends State<HomePage> {
             DropdownButtonFormField<String>(
               value: selectedCenter,
               decoration: InputDecoration(
-                labelText: 'Centro médico',
+                labelText: 'Ingredientes',
                 border: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(10),
                 ),
               ),
-              items: centers.map((center) {
+              items: ingredientes.map((center) {
                 return DropdownMenuItem<String>(
                   value: center,
                   child: Text(center),
@@ -92,7 +92,7 @@ class _HomePageState extends State<HomePage> {
                   borderRadius: BorderRadius.circular(10),
                 ),
               ),
-              items: doctors.map((doctor) {
+              items: utencilios.map((doctor) {
                 return DropdownMenuItem<String>(
                   value: doctor,
                   child: Text(doctor),
@@ -108,7 +108,7 @@ class _HomePageState extends State<HomePage> {
             TextField(
               controller: dateController,
               decoration: InputDecoration(
-                labelText: 'Fecha',
+                labelText: 'Fecha de preparacion',
                 border: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(10),
                 ),
@@ -159,7 +159,7 @@ class _HomePageState extends State<HomePage> {
                 borderRadius: BorderRadius.circular(10),
               ),
             ),
-            child: Text("Agregar cita"),
+            child: Text("Agregar receta"),
           ),
         ],
       ),
@@ -170,7 +170,7 @@ class _HomePageState extends State<HomePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Menu de citas', style: TextStyle(color: Colors.white)),
+        title: const Text('Menu de recetas', style: TextStyle(color: Colors.white)),
         backgroundColor: Colors.blueAccent,
       ),
       floatingActionButton: FloatingActionButton(
@@ -203,10 +203,10 @@ class _HomePageState extends State<HomePage> {
                     subtitle: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Text('Centro médico: ${data['center']}'),
+                        Text('Ingredientes: ${data['center']}'),
                         Text('Doctor: ${data['doctor']}'),
-                        Text('Fecha: ${data['date']}'),
-                        Text('Nota: ${data['note']}'),
+                        Text('Fecha de preparacion: ${data['date']}'),
+                        Text('Descripcion: ${data['note']}'),
                       ],
                     ),
                     trailing: Row(
