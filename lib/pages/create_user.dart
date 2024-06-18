@@ -1,27 +1,27 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
-class LoginScreen extends StatefulWidget {
-  const LoginScreen({super.key});
+class RegisterScreen extends StatefulWidget {
+  const RegisterScreen({super.key});
   @override
-  _LoginScreenState createState() => _LoginScreenState();
+  _RegisterScreenState createState() => _RegisterScreenState();
 }
 
-class _LoginScreenState extends State<LoginScreen> {
+class _RegisterScreenState extends State<RegisterScreen> {
   final _auth = FirebaseAuth.instance;
   final _emailController = TextEditingController();
   final _passwordController = TextEditingController();
   final _formKey = GlobalKey<FormState>();
 
-  void _login() async {
+  void _register() async {
     if (_formKey.currentState?.validate() ?? false) {
       try {
-        final user = await _auth.signInWithEmailAndPassword(
+        final user = await _auth.createUserWithEmailAndPassword(
           email: _emailController.text.trim(),
           password: _passwordController.text.trim(),
         );
         if (user != null) {
-          // Navigate to home screen or main app screen
+          // Navegar a la pantalla principal
           Navigator.pushReplacementNamed(context, '/home');
         }
       } on FirebaseAuthException catch (e) {
@@ -29,21 +29,6 @@ class _LoginScreenState extends State<LoginScreen> {
       } catch (e) {
         _showErrorDialog('An unknown error occurred.');
       }
-    }
-  }
-
-  void _resetPassword() async {
-    if (_emailController.text.isEmpty) {
-      _showErrorDialog('Please enter your email to reset password.');
-      return;
-    }
-    try {
-      await _auth.sendPasswordResetEmail(email: _emailController.text.trim());
-      _showMessageDialog("Password reset email sent.");
-    } on FirebaseAuthException catch (e) {
-      _showErrorDialog(e.message);
-    } catch (e) {
-      _showErrorDialog('An unknown error occurred.');
     }
   }
 
@@ -65,29 +50,11 @@ class _LoginScreenState extends State<LoginScreen> {
     );
   }
 
-  void _showMessageDialog(String message) {
-    showDialog(
-      context: context,
-      builder: (ctx) => AlertDialog(
-        title: Text("Info"),
-        content: Text(message),
-        actions: <Widget>[
-          TextButton(
-            child: Text("OK"),
-            onPressed: () {
-              Navigator.of(ctx).pop();
-            },
-          ),
-        ],
-      ),
-    );
-  }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Login'),
+        title: Text('Register'),
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
@@ -126,18 +93,8 @@ class _LoginScreenState extends State<LoginScreen> {
               ),
               SizedBox(height: 20),
               ElevatedButton(
-                child: Text('Login'),
-                onPressed: _login,
-              ),
-              TextButton(
-                child: Text('Forgot Password?'),
-                onPressed: _resetPassword,
-              ),
-              TextButton(
-                child: Text('Create an Account'),
-                onPressed: () {
-                  Navigator.pushNamed(context, '/register');
-                },
+                child: Text('Register'),
+                onPressed: _register,
               ),
             ],
           ),
