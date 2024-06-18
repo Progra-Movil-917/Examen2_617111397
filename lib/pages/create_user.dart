@@ -1,14 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:examen_2_617111397/services/firestore.dart';
 
 class RegisterScreen extends StatefulWidget {
   const RegisterScreen({super.key});
+
   @override
   _RegisterScreenState createState() => _RegisterScreenState();
 }
 
 class _RegisterScreenState extends State<RegisterScreen> {
   final _auth = FirebaseAuth.instance;
+  final _firestoreService = FirestoreService();
   final _emailController = TextEditingController();
   final _passwordController = TextEditingController();
   final _formKey = GlobalKey<FormState>();
@@ -16,18 +20,24 @@ class _RegisterScreenState extends State<RegisterScreen> {
   void _register() async {
     if (_formKey.currentState?.validate() ?? false) {
       try {
-        final user = await _auth.createUserWithEmailAndPassword(
+        final userCredential = await _auth.createUserWithEmailAndPassword(
           email: _emailController.text.trim(),
           password: _passwordController.text.trim(),
         );
+        final user = userCredential.user;
         if (user != null) {
+          // Guardar la información del usuario en Firestore
+          await _firestoreService.addUser(
+            uid: user.uid,
+            email: user.email!,
+          );
           // Navegar a la pantalla principal
           Navigator.pushReplacementNamed(context, '/home');
         }
       } on FirebaseAuthException catch (e) {
         _showErrorDialog(e.message);
       } catch (e) {
-        _showErrorDialog('An unknown error occurred.');
+        _showErrorDialog('un error ha ocurrido.');
       }
     }
   }
@@ -37,10 +47,10 @@ class _RegisterScreenState extends State<RegisterScreen> {
       context: context,
       builder: (ctx) => AlertDialog(
         title: Text("Error"),
-        content: Text(message ?? 'An unknown error occurred.'),
+        content: Text(message ?? 'un error ha ocurrido.'),
         actions: <Widget>[
           TextButton(
-            child: Text("OK"),
+            child: const Text("OK"),
             onPressed: () {
               Navigator.of(ctx).pop();
             },
@@ -54,7 +64,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Register'),
+        title: const Text('Register'),
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
@@ -66,13 +76,13 @@ class _RegisterScreenState extends State<RegisterScreen> {
               TextFormField(
                 controller: _emailController,
                 keyboardType: TextInputType.emailAddress,
-                decoration: InputDecoration(labelText: 'Email'),
+                decoration: const InputDecoration(labelText: 'Email'),
                 validator: (value) {
                   if (value == null || value.isEmpty) {
-                    return 'Please enter your email';
+                    return 'Por favor ingresa tu email';
                   }
                   if (!RegExp(r'^[^@]+@[^@]+\.[^@]+').hasMatch(value)) {
-                    return 'Please enter a valid email address';
+                    return 'Por favor ingrese un correo valido';
                   }
                   return null;
                 },
@@ -80,20 +90,20 @@ class _RegisterScreenState extends State<RegisterScreen> {
               TextFormField(
                 controller: _passwordController,
                 obscureText: true,
-                decoration: InputDecoration(labelText: 'Password'),
+                decoration: const InputDecoration(labelText: 'Contraseña'),
                 validator: (value) {
                   if (value == null || value.isEmpty) {
-                    return 'Please enter your password';
+                    return 'Por favor ingrese su contraseña';
                   }
                   if (value.length < 6) {
-                    return 'Password must be at least 6 characters';
+                    return 'La contraseña debe tener al menos 6 caracteres';
                   }
                   return null;
                 },
               ),
-              SizedBox(height: 20),
+              const SizedBox(height: 20),
               ElevatedButton(
-                child: Text('Register'),
+                child: const Text('Registrase'),
                 onPressed: _register,
               ),
             ],
