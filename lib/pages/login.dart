@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:examen_2_617111397/services/firestore.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
+
   @override
   _LoginScreenState createState() => _LoginScreenState();
 }
@@ -16,12 +18,13 @@ class _LoginScreenState extends State<LoginScreen> {
   void _login() async {
     if (_formKey.currentState?.validate() ?? false) {
       try {
-        final user = await _auth.signInWithEmailAndPassword(
+        final userCredential = await _auth.signInWithEmailAndPassword(
           email: _emailController.text.trim(),
           password: _passwordController.text.trim(),
         );
+        final user = userCredential.user;
         if (user != null) {
-          // Navigate to home screen or main app screen
+          // Navegar a la pantalla principal
           Navigator.pushReplacementNamed(context, '/home');
         }
       } on FirebaseAuthException catch (e) {
@@ -34,7 +37,7 @@ class _LoginScreenState extends State<LoginScreen> {
 
   void _resetPassword() async {
     if (_emailController.text.isEmpty) {
-      _showErrorDialog('Please enter your email to reset password.');
+      _showErrorDialog('Por favor ingresa tu correo electronico');
       return;
     }
     try {
@@ -87,7 +90,7 @@ class _LoginScreenState extends State<LoginScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Login'),
+        title: const Text('Login'),
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
@@ -99,13 +102,13 @@ class _LoginScreenState extends State<LoginScreen> {
               TextFormField(
                 controller: _emailController,
                 keyboardType: TextInputType.emailAddress,
-                decoration: InputDecoration(labelText: 'Email'),
+                decoration: const InputDecoration(labelText: 'Email'),
                 validator: (value) {
                   if (value == null || value.isEmpty) {
-                    return 'Please enter your email';
+                    return 'Por favor ingresa tu correo electronico';
                   }
                   if (!RegExp(r'^[^@]+@[^@]+\.[^@]+').hasMatch(value)) {
-                    return 'Please enter a valid email address';
+                    return 'Por favor ingresa un correo electronico valido';
                   }
                   return null;
                 },
@@ -113,28 +116,28 @@ class _LoginScreenState extends State<LoginScreen> {
               TextFormField(
                 controller: _passwordController,
                 obscureText: true,
-                decoration: InputDecoration(labelText: 'Password'),
+                decoration: const InputDecoration(labelText: 'Password'),
                 validator: (value) {
                   if (value == null || value.isEmpty) {
-                    return 'Please enter your password';
+                    return 'Por favor ingresa tu contraseña';
                   }
                   if (value.length < 6) {
-                    return 'Password must be at least 6 characters';
+                    return 'Contraseña debe tener al menos 6 caracteres';
                   }
                   return null;
                 },
               ),
-              SizedBox(height: 20),
+              const SizedBox(height: 20),
               ElevatedButton(
-                child: Text('Login'),
+                child: const Text('Login'),
                 onPressed: _login,
               ),
               TextButton(
-                child: Text('Forgot Password?'),
+                child: const Text('Forgot Password?'),
                 onPressed: _resetPassword,
               ),
               TextButton(
-                child: Text('Create an Account'),
+                child: const Text('Create an Account'),
                 onPressed: () {
                   Navigator.pushNamed(context, '/register');
                 },
