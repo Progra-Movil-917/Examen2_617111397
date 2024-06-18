@@ -1,16 +1,28 @@
-# examen_2_617111397
+# Examen 2
 
-A new Flutter project.
+#🟢 Configuracion inicial
+Se instalaron las depencias
+Se creo el proyecto en la consola de firebase
+Se activo la autenticacion por correo
+Se creo la base de datos
+Se cambio allow read y write a Truea
 
-## Getting Started
+#🟢Autenticación
+Se creo una pantalla de login donde se solicita mediante text el correo y contraseña
+![image](https://github.com/Progra-Movil-917/Examen2_617111397/assets/127124353/951080a4-3154-4a1f-9a50-488f287c31b8)
 
-This project is a starting point for a Flutter application.
+Luego se almacena en firebase
+![image](https://github.com/Progra-Movil-917/Examen2_617111397/assets/127124353/d39888f6-0753-482e-b493-2156ab7bc9d2)
 
-A few resources to get you started if this is your first Flutter project:
+#🟢Base de Datos
+Una vez configurada la base y creado el servicio que mandeja el crud de firebase
+Se manda el usuario al menu principal donde podra agregar, editar y eliminar una receta
+![image](https://github.com/Progra-Movil-917/Examen2_617111397/assets/127124353/14a2dc52-a678-417c-8c6c-c0fe344ffe0b)
 
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
+Esto se almacena en firebase de la siguiente manera
+![image](https://github.com/Progra-Movil-917/Examen2_617111397/assets/127124353/7f14965a-0405-4e04-94ae-7d8ab8661ed8)
 
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+
+
+
+
