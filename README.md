@@ -23,6 +23,8 @@ Esto se almacena en firebase de la siguiente manera
 ![image](https://github.com/Progra-Movil-917/Examen2_617111397/assets/127124353/7f14965a-0405-4e04-94ae-7d8ab8661ed8)
 
 
+Video demostrativo: https://drive.google.com/file/d/1oZi9og0HpY_puDQH_uOVil79sug-u4Xi/view?usp=sharing
 
+Saludos
 
 
